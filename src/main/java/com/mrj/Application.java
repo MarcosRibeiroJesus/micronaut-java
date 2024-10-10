@@ -16,7 +16,7 @@ public class Application {
 
         var context = Micronaut.run(Application.class, args);
 
-        log.debug("Message from Hello World service: {}", context.getBean(HelloWorldServiceImpl.class).helloFromService());
-        log.debug("Message from Micronaut service: {}", context.getBean(HelloMicronautServiceImpl.class).helloFromService());
+        log.info("Message from Hello World service: {}", context.getBean(HelloWorldServiceImpl.class).helloFromService());
+        log.info("Message from Micronaut service: {}", context.getBean(HelloMicronautServiceImpl.class).helloFromService());
     }
 }
