@@ -18,7 +18,13 @@ dependencies {
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
     testImplementation("io.micronaut:micronaut-http-client")
+
     implementation("net.datafaker:datafaker:2.4.0")
+
+    compileOnly("org.projectlombok:lombok:1.18.34")
+    annotationProcessor("org.projectlombok:lombok:1.18.34")
+    testCompileOnly ("org.projectlombok:lombok:1.18.34")
+    testAnnotationProcessor ("org.projectlombok:lombok:1.18.34")
 }
 
 
