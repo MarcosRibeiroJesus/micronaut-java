@@ -5,7 +5,7 @@ plugins {
 }
 
 version = "0.1"
-group = "com.mrj"
+group = "com.mrj.web"
 
 repositories {
     mavenCentral()
@@ -18,18 +18,11 @@ dependencies {
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
     testImplementation("io.micronaut:micronaut-http-client")
-    testImplementation("io.micronaut.test:micronaut-test-junit5")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-
-    compileOnly("org.projectlombok:lombok:1.18.34")
-    annotationProcessor("org.projectlombok:lombok:1.18.34")
-    testCompileOnly ("org.projectlombok:lombok:1.18.34")
-    testAnnotationProcessor ("org.projectlombok:lombok:1.18.34")
 }
 
 
 application {
-    mainClass = "com.mrj.Application"
+    mainClass = "com.mrj.web.Application"
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("21")
@@ -44,7 +37,7 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("com.mrj.*")
+        annotations("com.mrj.web.*")
     }
     aot {
         // Please review carefully the optimizations enabled below
