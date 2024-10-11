@@ -4,6 +4,7 @@ import com.mrj.web.model.InMemoryStore;
 import com.mrj.web.model.Product;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,11 @@ public class ProductsController {
     @Get
     public List<Product> listAll() {
         return new ArrayList<>(store.getProducts().values());
+    }
+
+    @Get("{id}")
+    public Product getProduct(@PathVariable Integer id) {
+        return store.getProducts().get(id);
     }
 }
 

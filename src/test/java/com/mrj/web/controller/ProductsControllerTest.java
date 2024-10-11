@@ -1,5 +1,6 @@
 package com.mrj.web.controller;
 
+import com.mrj.web.model.Product;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.json.JsonMapper;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Slf4j
 @MicronautTest
@@ -33,6 +35,14 @@ class ProductsControllerTest {
         var response = client.toBlocking().retrieve("/", JsonNode.class);
         LOG.debug("Retrieved products: {}", logProducts(response));
         assertEquals(10, response.size());
+    }
+
+    @Test
+    void productsFetchProductByID() throws IOException {
+        var response = client.toBlocking().retrieve("/0", Product.class);
+        assertEquals(0, response.id());
+        assertEquals(Product.Type.COFFEE, response.type());
+        assertNotNull(response.name());
     }
 
     private String logProducts(JsonNode response) throws IOException {
