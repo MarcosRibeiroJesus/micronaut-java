@@ -38,7 +38,7 @@ class ProductsControllerTest {
     }
 
     @Test
-    void productsFetchProductByID() throws IOException {
+    void productsFetchProductByID() {
         var response = client.toBlocking().retrieve("/0", Product.class);
         assertEquals(0, response.id());
         assertEquals(Product.Type.COFFEE, response.type());
