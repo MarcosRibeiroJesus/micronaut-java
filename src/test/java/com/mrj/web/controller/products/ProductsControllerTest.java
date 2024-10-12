@@ -1,4 +1,4 @@
-package com.mrj.web.controller;
+package com.mrj.web.controller.products;
 
 import com.mrj.web.model.Product;
 import io.micronaut.http.client.HttpClient;

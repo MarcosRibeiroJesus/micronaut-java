@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 public class InMemoryStore {
 
     private static final Logger LOG = LoggerFactory.getLogger(InMemoryStore.class);
-    private Map<Integer, Product> products = new HashMap<>();
+    private final Map<Integer, Product> products = new HashMap<>();
     private final Faker faker = new Faker();
 
     @PostConstruct
@@ -28,6 +28,11 @@ public class InMemoryStore {
         var product = new Product(id, faker.coffee().blendName(), Product.Type.COFFEE);
         products.put(id, product);
         LOG.debug("Added Product: {}", product);
+    }
+
+    public Product addProduct(Product product) {
+        products.put(product.id(), product);
+        return products.get(product.id());
     }
 
     public Map<Integer, Product> getProducts() {
