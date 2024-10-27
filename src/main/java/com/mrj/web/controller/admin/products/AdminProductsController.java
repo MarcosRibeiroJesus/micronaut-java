@@ -24,7 +24,7 @@ public class AdminProductsController {
         if (store.getProducts().containsKey(product.id())) {
             throw new HttpStatusException(
                     HttpStatus.CONFLICT,
-                    "Product with id " + product.id() + " already exists");
+                    String.format("Product with id %s already exists", product.id()));
         }
         return store.addProduct(product);
     }

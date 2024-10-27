@@ -8,6 +8,7 @@ import io.micronaut.json.tree.JsonNode;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ class ProductsControllerTest {
     @Inject
     private JsonMapper jsonMapper;
 
+    @DisplayName("Products endpoint returns 10 products")
     @Test
     void productsEndpointReturnsTenProducts() throws IOException {
         var response = client.toBlocking().retrieve("/", JsonNode.class);
@@ -37,6 +39,7 @@ class ProductsControllerTest {
         assertEquals(10, response.size());
     }
 
+    @DisplayName("Products fetch product by ID")
     @Test
     void productsFetchProductByID() {
         var response = client.toBlocking().retrieve("/0", Product.class);
@@ -45,6 +48,7 @@ class ProductsControllerTest {
         assertNotNull(response.name());
     }
 
+    @DisplayName("Can limit the amount of products to fetch to 5")
     @Test
     void canLimitTheAmountOfProductsToFetchTo5() throws IOException {
         JsonNode response = client.toBlocking().retrieve("/filter?max=5", JsonNode.class);
@@ -52,8 +56,9 @@ class ProductsControllerTest {
         assertEquals(5, response.size());
     }
 
+    @DisplayName("Can filter using offset and max limit")
     @Test
-    void canFilterUsing() throws IOException {
+    void canFilterUsingOffsetAndMaxLimit  () throws IOException {
         JsonNode response = client.toBlocking().retrieve("/filter?max=2&offset=6", JsonNode.class);
         LOG.debug("Retrieved 2 products starting with offset 6: {}", logProducts(response));
         assertEquals(2, response.size());
