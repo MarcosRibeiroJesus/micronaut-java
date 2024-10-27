@@ -2,6 +2,7 @@ package com.mrj.web.controller.admin.products;
 
 import com.mrj.web.model.InMemoryStore;
 import com.mrj.web.model.Product;
+import com.mrj.web.model.UpdateProductRequest.UpdateProductRequest;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.client.HttpClient;
@@ -63,4 +64,44 @@ public class AdminProductsControllerTest {
         assertEquals(HttpStatus.CONFLICT, expectedConflict.getStatus());
     }
 
+    @DisplayName("A product can be updated using the admin put endpoint")
+    @Test
+    void aProductCanBeUpdatedUsingTheAdminPutEndpoint() {
+        var productToUpdate = new Product(777, "old-value", Product.Type.OTHER);
+
+        store.getProducts().put(productToUpdate.id(), productToUpdate);
+        assertEquals(productToUpdate, store.getProducts().get(productToUpdate.id()));
+
+        var updateRequest = new UpdateProductRequest("new-value", Product.Type.TEA);
+
+        var response = client.toBlocking().exchange(
+                HttpRequest.PUT("/" + productToUpdate.id(), updateRequest),
+                Product.class
+        );
+        assertEquals(HttpStatus.OK, response.getStatus());
+        var productFromStore = store.getProducts().get(productToUpdate.id());
+        assertEquals(updateRequest.name(), productFromStore.name());
+        assertEquals(updateRequest.type(), productFromStore.type());
+    }
+
+    @DisplayName("A non-existing product will be added when using the admin put endpoint")
+    @Test
+    void aNonExistingProductWillBeAddedWhenUsingTheAdminPutEndpoint() {
+        var productId = 777;
+
+        store.getProducts().remove(productId);
+        assertNull(store.getProducts().get(productId));
+
+        var updateRequest = new UpdateProductRequest("new-value", Product.Type.TEA);
+
+        var response = client.toBlocking().exchange(
+                HttpRequest.PUT("/" + productId, updateRequest),
+                Product.class
+        );
+        assertEquals(HttpStatus.OK, response.getStatus());
+        var productFromStore = store.getProducts().get(productId);
+        assertEquals(productId, productFromStore.id());
+        assertEquals(updateRequest.name(), productFromStore.name());
+        assertEquals(updateRequest.type(), productFromStore.type());
+    }
 }
