@@ -2,12 +2,10 @@ package com.mrj.web.controller.admin.products;
 
 import com.mrj.web.model.InMemoryStore;
 import com.mrj.web.model.Product;
+import com.mrj.web.model.UpdateProductRequest.UpdateProductRequest;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
-import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Post;
-import io.micronaut.http.annotation.Status;
+import io.micronaut.http.annotation.*;
 import io.micronaut.http.exceptions.HttpStatusException;
 import lombok.RequiredArgsConstructor;
 
@@ -27,5 +25,12 @@ public class AdminProductsController {
                     String.format("Product with id %s already exists", product.id()));
         }
         return store.addProduct(product);
+    }
+
+    @Put("{id}")
+    public Product updateProduct(@PathVariable Integer id,
+                                 @Body UpdateProductRequest request) {
+        var updatedProduct = new Product(id, request.name(), request.type());
+        return store.addProduct(updatedProduct);
     }
 }
