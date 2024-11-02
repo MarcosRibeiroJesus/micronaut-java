@@ -9,6 +9,8 @@ import io.micronaut.http.annotation.*;
 import io.micronaut.http.exceptions.HttpStatusException;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Objects;
+
 @Controller("/admin/products")
 @RequiredArgsConstructor
 public class AdminProductsController {
@@ -32,5 +34,17 @@ public class AdminProductsController {
                                  @Body UpdateProductRequest request) {
         var updatedProduct = new Product(id, request.name(), request.type());
         return store.addProduct(updatedProduct);
+    }
+
+    @Delete("{id}")
+    @Status(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable Integer id) {
+        try {
+            Objects.requireNonNull(store.getProducts().get(id));
+            store.removeProduct(id);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
