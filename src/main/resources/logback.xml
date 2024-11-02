@@ -8,8 +8,8 @@
         </encoder>
     </appender>
 
-    <logger name="com.mrj" level="debug"/>
-    <logger name="io.micronaut.context" level="debug"/>
+    <logger name="com.mrj.web" level="debug"/>
+<!--    <logger name="io.micronaut.context" level="debug"/>-->
 
     <root level="info">
         <appender-ref ref="STDOUT" />

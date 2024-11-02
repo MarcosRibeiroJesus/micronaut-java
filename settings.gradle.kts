@@ -1,4 +1,4 @@
 
 
-rootProject.name="micronaut-start"
+rootProject.name="mrj-products"
 

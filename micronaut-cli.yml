@@ -1,5 +1,5 @@
 applicationType: default
-defaultPackage: com.mrj
+defaultPackage: com.mrj.web
 testFramework: junit
 sourceLanguage: java
 buildTool: gradle_kotlin
