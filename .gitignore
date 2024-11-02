@@ -24,7 +24,7 @@ hs_err_pid*
 replay_pid*
 .gradle
 .idea
-.Rest.RestfulApiTool
+.RestfulApiTool
 build
 gradle
 htmlReport
