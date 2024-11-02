@@ -3,7 +3,9 @@ package com.mrj.web.controller.admin.products;
 import com.mrj.web.model.InMemoryStore;
 import com.mrj.web.model.Product;
 import com.mrj.web.model.UpdateProductRequest.UpdateProductRequest;
+import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
@@ -103,5 +105,36 @@ public class AdminProductsControllerTest {
         assertEquals(productId, productFromStore.id());
         assertEquals(updateRequest.name(), productFromStore.name());
         assertEquals(updateRequest.type(), productFromStore.type());
+    }
+
+    @Test
+    void aProductCanBeDeletedUsingTheAdminDeleteEndpoint() {
+        var productToDelete = new Product(987, "delete-me", Product.Type.OTHER);
+        store.addProduct(productToDelete);
+        assertTrue(store.getProducts().containsKey(productToDelete.id()));
+        assertTrue(store.getProducts().containsValue(productToDelete));
+
+        final HttpResponse<Product> response = client.toBlocking().exchange(
+                HttpRequest.DELETE("/" + productToDelete.id()),
+                Argument.of(Product.class)
+        );
+        assertEquals(HttpStatus.OK, response.getStatus());
+        assertTrue(response.getBody().isPresent());
+        assertEquals(productToDelete.id(), response.getBody().get().id());
+        assertEquals(productToDelete.name(), response.getBody().get().name());
+        assertEquals(productToDelete.type(), response.getBody().get().type());
+    }
+
+    @Test
+    void deletingANonExistingProductResultsInNotFoundResponse() {
+        var productId = 987;
+        store.deleteProduct(productId);
+        assertNull(store.getProducts().get(productId));
+
+        var response = assertThrows(HttpClientResponseException.class,
+                () -> client.toBlocking().exchange(
+                        HttpRequest.DELETE("/" + productId)
+                ));
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatus());
     }
 }

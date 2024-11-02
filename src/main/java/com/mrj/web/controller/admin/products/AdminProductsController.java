@@ -37,14 +37,7 @@ public class AdminProductsController {
     }
 
     @Delete("{id}")
-    @Status(HttpStatus.NO_CONTENT)
-    public void deleteProduct(@PathVariable Integer id) {
-        try {
-            Objects.requireNonNull(store.getProducts().get(id));
-            store.removeProduct(id);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public Product deleteProduct(@PathVariable Integer id) {
+        return store.deleteProduct(id);
     }
 }
